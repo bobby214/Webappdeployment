@@ -1,0 +1,37 @@
+trigger:
+- main  # Adjust according to your main branch
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - script: echo Building the project...
+      displayName: 'Build Step'
+
+- stage: DeployDev
+  jobs:
+  - deployment: DeployDev
+    environment: Dev  # Your dev environment name
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Deploying to Development Environment...
+            displayName: 'Deploy to Dev'
+
+- stage: DeployProd
+  jobs:
+  - deployment: DeployProd
+    environment: Production  # Your production environment name
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Deploying to VM1...
+            displayName: 'Deploy to VM1'
+          - script: echo Deploying to VM2...
+            displayName: 'Deploy to VM2'
